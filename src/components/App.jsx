@@ -27,16 +27,10 @@ const App = () => {
   });
 
   useEffect(() => {
-    if (q === '') {
-      return;
-    }
-    setPhotos(prevState => ({
-      ...prevState,
-      loading: true,
-      error: false,
-    }));
-
-    const fetch = async (q, page) => {
+    const fetch = async () => {
+      if (q === '') {
+        return;
+      }
       try {
         const data = await fetchPhotos(q, page);
         setPhotos(prevState => ({
@@ -53,7 +47,7 @@ const App = () => {
         }));
       }
     };
-    fetch(q, page);
+    fetch();
   }, [q, page]);
 
   const setSearch = ({ q }) => {
