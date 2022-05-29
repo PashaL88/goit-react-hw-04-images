@@ -27,25 +27,33 @@ const App = () => {
   });
 
   useEffect(() => {
-    const fetch = async () => {
-      if (q === '') {
-        return;
-      }
-      setPhotos({ ...photos, loading: true, error: null });
+    if (q === '') {
+      return;
+    }
+    setPhotos(prevState => ({
+      ...prevState,
+      loading: true,
+      error: false,
+    }));
 
+    const fetch = async (q, page) => {
       try {
-        const items = await fetchPhotos(q, page);
+        const data = await fetchPhotos(q, page);
         setPhotos(prevState => ({
           ...prevState,
-          items: [...prevState.items, ...items.hits],
+          items: [...prevState.items, ...data.hits],
           loading: false,
-          total: items.total,
+          total: data.total,
         }));
       } catch (error) {
-        setPhotos({ ...photos, loading: false, error: error.message });
+        setPhotos(prevState => ({
+          ...prevState,
+          loading: false,
+          error: error.message,
+        }));
       }
     };
-    fetch();
+    fetch(q, page);
   }, [q, page]);
 
   const setSearch = ({ q }) => {
