@@ -27,10 +27,15 @@ const App = () => {
   });
 
   useEffect(() => {
+    if (q === '') {
+      return;
+    }
+    setPhotos(prevState => ({
+      ...prevState,
+      loading: true,
+      error: null,
+    }));
     const fetch = async () => {
-      if (q === '') {
-        return;
-      }
       try {
         const data = await fetchPhotos(q, page);
         setPhotos(prevState => ({
